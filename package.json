@@ -60,6 +60,7 @@
     "dota2api": "git+https://github.com/DFsharp/dota2api.git",
     "glob": "^7.0.3",
     "nconf": "^0.8.4",
-    "ramda": "^0.21.0"
+    "ramda": "^0.21.0",
+    "roll": "^1.1.0"
   }
 }

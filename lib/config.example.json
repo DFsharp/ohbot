@@ -1,0 +1,11 @@
+{
+    "PREFIX":"!",
+    "PORT":"5000",
+    "EMAIL": "Discord Email",
+    "PASSWORD":"Discord Password",
+    "CREATOR_ID": "Discord User id for the owner of the bot",
+    "ADMIN_IDS":[
+        "Discord IDs of admins"
+    ],
+    "DOTA_API_KEY":""
+}
