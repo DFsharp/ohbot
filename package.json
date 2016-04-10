@@ -41,16 +41,16 @@
       "mocha": true
     }
   },
-  "babel":{
-    "presets":[
-        "es2015-node5"
-    ]  
+  "babel": {
+    "presets": [
+      "es2015-node5"
+    ]
   },
   "repository": "dfsharp/ohbot",
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp",
-    "start": "node ./lib/index.js"
+    "start": "node index.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -58,6 +58,8 @@
     "babel-preset-es2015-node5": "^1.2.0",
     "discord.js": "^6.1.0",
     "dota2api": "git+https://github.com/DFsharp/dota2api.git",
-    "nconf": "^0.8.4"
+    "glob": "^7.0.3",
+    "nconf": "^0.8.4",
+    "ramda": "^0.21.0"
   }
 }
