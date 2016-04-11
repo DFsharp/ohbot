@@ -1,18 +1,18 @@
 # ohbot [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > A bot for OUTER::HAVEN Discord server
 
+Building this to get familiar with nodejs development, and to provide some fun to my gamer group's discord server. 
 ## Installation
 
 ```sh
-$ npm install --save ohbot
+$ git clone https://github.com/DFsharp/ohbot.git
+$ npm install
 ```
 
 ## Usage
-
-```js
-var ohbot = require('ohbot');
-
-ohbot('Rainbow');
+Rename config.example.json to config.json and add needed values.
+```
+$ npm start
 ```
 ## License
 
