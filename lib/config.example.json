@@ -1,11 +1,11 @@
 {
     "PREFIX":"!",
     "PORT":"5000",
-    "EMAIL": "Discord Email",
-    "PASSWORD":"Discord Password",
-    "CREATOR_ID": "Discord User id for the owner of the bot",
-    "ADMIN_IDS":[
-        "Discord IDs of admins"
-    ],
-    "DOTA_API_KEY":""
+    "TOKEN":"000000000000000000000000000",
+    "CREATOR_ID": "0000000000000000000",
+    "ADMIN_IDS":{
+        "0000000000000000000":true
+    },
+    "DOTA_API_KEY":"000000000000000000",
+    "MONGODB_URL":"mongodb://localhost:27017/ohbot"
 }
