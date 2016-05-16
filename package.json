@@ -19,7 +19,7 @@
     "babel-cli": "^6.6.5",
     "babel-core": "^5.5.0",
     "babel-eslint": "^4.1.8",
-    "babel-register": "^6.7.2",
+    "babel-register": "6.7.2",
     "del": "^2.0.2",
     "eslint": "^2.1.0",
     "eslint-config-xo-space": "^0.10.0",
