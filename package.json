@@ -19,7 +19,7 @@
     "babel-cli": "^6.6.5",
     "babel-core": "^5.5.0",
     "babel-eslint": "^4.1.8",
-    "babel-register": "^6.7.2",
+    "babel-register": "6.7.2",
     "del": "^2.0.2",
     "eslint": "^2.1.0",
     "eslint-config-xo-space": "^0.10.0",
@@ -50,7 +50,9 @@
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp",
-    "start": "node index.js"
+    "start": "node index.js",
+	"build": "babel lib --out-dir dist --copy-files",
+	"windev": "SET NODE_ENV=dev && node index.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -58,8 +60,8 @@
     "babel": "^6.5.2",
     "babel-cli": "^6.7.7",
     "babel-preset-es2015-node5": "^1.2.0",
-    "discord.js": "^7.0.1",
-    "dota2api": "git+https://github.com/DFsharp/dota2api.git",
+    "discord.js": "^11.0.0",
+    "dota2api": "git+https://github.com/jiin/dota2api.git",
     "eslint": "^2.8.0",
     "glob": "^7.0.3",
     "moment": "^2.13.0",
