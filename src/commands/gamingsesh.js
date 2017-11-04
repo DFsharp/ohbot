@@ -7,7 +7,7 @@ import R from 'ramda';
 
 moment.locale('es');
 export default {
-    createsession:(bot, msg, suffix) => {
+    createsession:(msg, suffix) => {
         if (!suffix) return;
         //if (!nconf.get("ADMIN_IDS")[msg.author.id]){
         //    bot.sendMessage(msg.channel, "Nice try");
@@ -38,71 +38,73 @@ export default {
             res = argParser.parse(suffix);
         } catch (e) {
             let helpStr = argParser.getHelpString();
-            bot.sendMessage(msg.channel, e);
+            msg.channel.send(e);
             return;
         }
         
         let sesh = {
-            name:res.name,
-            users:[],
+            name: res.name,
+            users: [],
             date: moment(res.date,"DD/MM/YYYY-hh:mma"),
-            recurring:res.recurring,
-            server: msg.channel.server.id,
-            description:res.description
+            recurring: res.recurring,
+            server: msg.channel.guild.id,
+            description: res.description
             };
             
             if (!sesh.date.isValid()) return;
             //console.log(sesh.date.format("DD/MM/YYYY-hh:mma"));
             sessions.addSesh(sesh,(err, res)=>{
                 if (err || !res) {
-                bot.sendMessage(msg.channel, err);
+                msg.channel.send(err);
                 return;
                 }
                 else
-                    bot.sendMessage(msg.channel,`Se creó la sesión ${sesh.name}. Si quieres unirte, escribe: !join ${sesh.name}`);
+                    msg.channel.send(`Se creó la sesión ${sesh.name}. Si quieres unirte, escribe: !join ${sesh.name}`);
             });
             
     },
-    join:(bot, msg, suffix) => {
+    join:(msg, suffix) => {
         if (!suffix) return;
         let user = {id:msg.author.id, remind:true};
         try {
         sessions.addUserToSesh({name: suffix}, {id:msg.author.id, remind:true}, (err, res)=>{
             if (err){
-                bot.sendMessage(msg.channel, err);
+                msg.channel.send(err);
                 return;
             }
             if (!res.value) return;            
             if(!R.findIndex(R.propEq('id',user.id))(res.value.users)) 
-                bot.sendMessage(msg.channel,`Ya estabas inscrito, che ${msg.author.username}.`);
+                msg.channel.send(`Ya estabas inscrito, che ${msg.author.username}.`);
         
             else 
-                bot.sendMessage(msg.channel,`Se agregó ${msg.author.username} a la sesión ${suffix}.`);
+                msg.channel.send(`Se agregó ${msg.author.username} a la sesión ${suffix}.`);
         });
         }
         catch (e){
             //console.log(e);
         }
     },
-    leave:(bot, msg, suffix)=>{
+    leave:(msg, suffix)=>{
         if (!suffix) return;
         let userId = msg.author.id;
         sessions.removeUserFromSesh({name:suffix}, userId ,(err, res) => {
             if (err){
-                bot.sendMessage(msg.channel, err);
+                msg.channel.send(err);
                 return;
             }
             if (!res.value) return;                
             if(R.findIndex(R.propEq('id',userId))(res.value.users))
-                bot.sendMessage(msg.channel,`No estabas inscrito en la sesión ${suffix}.`);
+                msg.reply(`no estabas inscrito en la sesión ${suffix}.`);
             else
-                bot.sendMessage(msg.channel,`Se eliminó ${msg.author.username} de la sesión ${suffix}.`);
+                msg.channel.send(`Se eliminó ${msg.author.username} de la sesión ${suffix}.`);
                
         });
     },
-    remind:(bot, msg, suffix) =>{
+    remind:(msg, suffix) =>{
         if (!suffix) return;
-        sessions.getSession({name:suffix, server:msg.channel.server.id}, (err, res)=>{
+        sessions.getSession({name:suffix, server:msg.guild.id}, (err, res) => {
+            if (res == null) return;
+            
             let date = moment(res.date._i,"DD/MM/YYYY-hh:mma");
             let now = moment();
             if (now.isAfter(date)) return;            
@@ -111,17 +113,17 @@ export default {
                 var user = res.users[i];
                 if (!user.remind) continue;
                 //TODO: remove reminders optional                
-                let message = `Vato, te recuerdo que hay una gaming session el ${date.format("DD/MM/YYYY")} a las ${date.format("hh:mma")}\n o sea, ${date.from(now)}.`;
-                bot.sendMessage(user.id,message);
+                let message = `te recuerdo que hay una gaming session el ${date.format("DD/MM/YYYY")} a las ${date.format("hh:mma")}\n o sea, ${date.from(now)}.`;
+                msg.reply(message);
             }
             
         });
     },
-    sessions:(bot, msg, suffix) =>{
+    sessions:(msg, suffix) =>{
         if (msg.channel.isPrivate) return;       
-        sessions.getAllSessions(msg.channel.server.id,(err, docs)=>{
+        sessions.getAllSessions(msg.guild.id, (err, docs)=>{
             if (err) return;
-           // bot.sendMessage(msg.channel,`Vatos, estas son las sesiones que hay: ${docs.length}`);
+           
             let available = 0;
             for (let i = 0; i < docs.length; i++){                
                 if(moment().isAfter(moment(docs[i].date._i,"DD/MM/YYYY-hh:mma")))                    
@@ -129,13 +131,13 @@ export default {
                 
                 let players = [];
                 for (let j = 0; j < docs[i].users.length; j++)
-                    players.push(msg.channel.server.members.get("id",docs[i].users[j].id).username);
+                    players.push(msg.guild.members.get("id", docs[i].users[j].id).username);
                 
                 let response = `Session: ${docs[i].name}\n players: ${players.join(", ")}\n Date: ${docs[i].date._i}`;
-                bot.sendMessage(msg.channel,response);
+                msg.channel.send(response);
                 available++;
             }
-            if (available>0){
+            if (available > 0){
                 bot.sendMessage(msg.channel,`Si quieres jalarte a una, escribe !join <session name>`);
             }
         })

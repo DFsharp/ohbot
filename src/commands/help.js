@@ -8,8 +8,11 @@ let help = {
     
 }
 export default {
-    help:(bot, msg, suffix) => {
-        if (help[suffix])
-            bot.sendMessage(msg.channel, help[suffix]);
+    help:(msg, suffix) => {
+        if (!suffix) {
+            msg.author.send(help);
+        }
+        else if (help[suffix])
+            msg.channel.send(help[suffix]);        
     }
 }

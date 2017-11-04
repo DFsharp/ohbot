@@ -1,5 +1,5 @@
 import assert from 'assert';
-import ohbot from '../lib';
+import ohbot from '../src';
 
 describe('ohbot', function () {
   it('should have unit test!', function () {

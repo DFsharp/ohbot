@@ -1,7 +1,14 @@
 var nconf = require('nconf');
 nconf.argv()
 .env()
-.file({file: __dirname + '/lib/config.json'});
+.file({file: __dirname + '/src/config.json'});
+
+if (!process.env.NODE_ENV){
 
 require('babel-register');
-require('./lib');
+require('./src');
+
+}
+//else
+//	require('./dist');
+

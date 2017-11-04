@@ -9,9 +9,8 @@ if (!nconf.get('TOKEN')) {
 }
 
 const bot = new Discord();
-
 bot.on('ready', () => {
-    console.log(`It's on, bitches! Serving on ${bot.servers.length} server(s)`);
+    console.log(`It's on, bitches! Serving on ${bot.guilds.size} server(s)`);
 });
 
 bot.on('message', (msg) => {
@@ -21,13 +20,12 @@ bot.on('message', (msg) => {
         let command = msg.content.toLowerCase().split(' ')[0].substring(1);
         let cmd = commands[command];
         let suffix = msg.content.substring(command.length + 2);
-        if (cmd) cmd(bot,msg, suffix);
+        if (cmd) cmd(msg, suffix);
         return;
     }
 });
 
-
 bot.on('serverDeleted', (server) => console.log(`'left server ${server.name}'`));
-bot.loginWithToken(nconf.get("TOKEN"));
+bot.login(nconf.get("TOKEN"));
 
 
