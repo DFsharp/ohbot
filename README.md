@@ -1,4 +1,4 @@
-# ohbot [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# ohbot
 > A bot for OUTER::HAVEN Discord server
 
 Building this to get familiar with nodejs development, and to provide some fun to my gamer group's discord server. 
