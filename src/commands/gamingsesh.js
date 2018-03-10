@@ -138,7 +138,7 @@ export default {
                 available++;
             }
             if (available > 0){
-                bot.sendMessage(msg.channel,`Si quieres jalarte a una, escribe !join <session name>`);
+                msg.channel.send(msg.channel,`Si quieres jalarte a una, escribe !join <session name>`);
             }
         })
     }
