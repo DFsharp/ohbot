@@ -10,7 +10,8 @@ export default {
 
     const args = suffix.split(' ');
     steamUsers.getSteamUser(args[0], (err, res) => {
-      if (err || !res) return;
+      if (err) ("An error occurred.");
+      if (!res) msg.reply(`User ${args[0]} not found`);
 
       csgoStats.load({
         key: steamAPIKey,
@@ -34,7 +35,7 @@ total knife kills: ${stats["total_kills_knife"]}\`\`\``);
   },
   add_steamid: (msg, suffix) => {
     if (!suffix) return;
-    var args = suffix.split(' ', 2);
+    const args = suffix.split(' ', 2);
 
     const steamUser = {
       steamId: args[0],
@@ -42,7 +43,7 @@ total knife kills: ${stats["total_kills_knife"]}\`\`\``);
     };
 
     steamUsers.addSteamUser(steamUser, (err, res) => {
-      if (err || !res){
+      if (err){
         msg.channel.send(err);
         return;
       }

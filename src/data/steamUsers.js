@@ -11,6 +11,10 @@ export default {
                            {$setOnInsert: steamUser},
                            {upsert: true},
                            (err, result) => {
+      if (err) {
+        cb("An error occurred, broski");
+        return;
+      }
       if (result.value) {
         cb(`Updating user ${steamUser.username}`, result);
         return;
