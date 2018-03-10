@@ -84,7 +84,7 @@ export default {
             //console.log(e);
         }
     },
-    leave_session:(msg, suffix)=>{
+    leave_session:(msg, suffix) => {
         if (!suffix) return;
         let userId = msg.author.id;
         sessions.removeUserFromSesh({name:suffix}, userId ,(err, res) => {
@@ -138,7 +138,7 @@ export default {
                 available++;
             }
             if (available > 0){
-                bot.sendMessage(msg.channel,`Si quieres jalarte a una, escribe !join <session name>`);
+                msg.channel.send(msg.channel,`Si quieres jalarte a una, escribe !join <session name>`);
             }
         })
     }

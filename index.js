@@ -5,8 +5,11 @@ nconf.argv()
 
 if (!process.env.NODE_ENV){
 
-require('babel-register');
-require('./src');
+  var dbUtil = require("./src/data/dbUtil");
+  dbUtil.connect(function(err){
+    require('babel-register');
+    require('./src');
+  });
 
 }
 //else
