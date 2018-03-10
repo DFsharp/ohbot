@@ -1,18 +1,29 @@
+import R from 'ramda';
+import glob from 'glob';
 
-let help = {
-    "createsession":"!createsession --name <name> --date <DD/MM/YYYY-HH:MMpm/am>",
-    "join":"!join <session name>",
-    "leave":"!leave <session name>",
-    "remind":"!remind <session name>",
-    "roll":"!roll <dice>\n dice= d6, 2d20, etc"
-    
-}
+const glob_options = {
+  realpath: true,
+  nodir: true
+};
+
+const command_files = R.flatten([
+  glob.sync(`${__dirname}/*(!(index.js))`, glob_options),
+  glob.sync(`${__dirname}/*/index.js`, glob_options),
+  glob.sync(`${__dirname}/*/*/index.js`, glob_options),
+  glob.sync(`${__dirname}/*(!(help))/*.js`, glob_options)
+]);
+
+const help = R.mergeAll(R.map(path => {
+  return require(path).help;
+}, command_files));
+
 export default {
-    help:(msg, suffix) => {
-        if (!suffix) {
-            msg.author.send(help);
-        }
-        else if (help[suffix])
-            msg.channel.send(help[suffix]);        
+  help: (msg, suffix) => {
+    if (!suffix) {
+      msg.reply("usage: ```!help <command>``` or ```!help all```");
     }
+    else if (help[suffix]) {
+      msg.reply(help[suffix]);
+    }
+  }
 }

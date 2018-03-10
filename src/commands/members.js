@@ -15,3 +15,7 @@ export default {
     }
   }
 }
+
+export const help = {
+  join: "!join"
+}
