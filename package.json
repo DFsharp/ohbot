@@ -52,7 +52,8 @@
     "test": "gulp",
     "start": "node index.js",
     "build": "babel src --out-dir dist --copy-files",
-    "windev": "SET NODE_ENV=dev && node index.js"
+    "windev": "SET NODE_ENV=dev && node index.js",
+    "prod": "SET NODE_ENV=Production && npm run build && node index.js"
   },
   "license": "MIT",
   "dependencies": {
