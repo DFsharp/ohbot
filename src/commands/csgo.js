@@ -29,7 +29,7 @@ total deaths: ${stats["total_deaths"]}
 total wins: ${stats["total_wins"]}
 total MVPs: ${stats["total_mvps"]}
 total knife kills: ${stats["total_kills_knife"]}\`\`\``);
-      }).catch(e => console.error(e));
+      }).catch(e => msg.channel.send("Error: Steam profile is private or SteamId is invalid"));
     });
 
   },
