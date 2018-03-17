@@ -37,6 +37,11 @@ total knife kills: ${stats["total_kills_knife"]}\`\`\``);
     if (!suffix) return;
     const args = suffix.split(' ', 2);
 
+    if (args.length != 2 || isNaN(args[0])) {
+      msg.channel.send(`Invalid input. usage: ${help.add_steamid}`);
+      return;
+    }
+
     const steamUser = {
       steamId: args[0],
       username: args[1]
@@ -57,5 +62,5 @@ total knife kills: ${stats["total_kills_knife"]}\`\`\``);
 
 export const help = {
   csgo: "!csgo <username> (add steam id with !add_steamid)",
-  add_steamid: "!add_steamid <steam Id> <username>"
+  add_steamid: "!add_steamid <steam Id> <username>. To obtain steam ID, visit https://steamidfinder.com"
 }
