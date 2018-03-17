@@ -22,7 +22,7 @@ export default {
          msg.channel.send(`\`\`\`${res.username}'s CS:GO Stats:
 last match kills: ${stats["last_match_kills"]}
 last match deaths: ${stats["last_match_deaths"]}
-last match wins: ${stats["last_match_wins"]}, (T: ${stats["last_match_t_wins"]}, CT: ${stats["last_match_ct_wins"]})
+last match wins: ${stats["last_match_wins"]}
 last match MVPs: ${stats["last_match_mvps"]}
 total kills: ${stats["total_kills"]}
 total deaths: ${stats["total_deaths"]}
