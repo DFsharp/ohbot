@@ -6,8 +6,7 @@ const users = db.collection("steamUsers");
 
 export default {
   addSteamUser: (steamUser, cb) => {
-
-    users.findOneAndUpdate({username: steamUser.username},
+    users.findOneAndUpdate({discordUserId: steamUser.discordUserId},
                            {$setOnInsert: steamUser},
                            {upsert: true},
                            (err, result) => {
@@ -16,7 +15,7 @@ export default {
         return;
       }
       if (result.value) {
-        cb(`Updating user ${steamUser.username}`, result);
+        cb(`Updated user ${steamUser.username}`, result);
         return;
       }
       else{
@@ -25,8 +24,8 @@ export default {
       }
     });
   },
-  getSteamUser: (steamUsername, cb) => {
-    users.findOne({username: steamUsername}, (err, res) => {
+  getSteamUser: (discordUserId, cb) => {
+    users.findOne({discordUserId: discordUserId}, (err, res) => {
       cb(err, res);
     })
   }

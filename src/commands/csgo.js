@@ -6,23 +6,32 @@ const steamAPIKey = nconf.get("STEAM_API_KEY");
 
 export default {
   csgo: (msg, suffix) => {
-    if (!suffix) {
+    if (!suffix || msg.mentions.users.size !== 1) {
       msg.reply(`usage: ${help.csgo}`);
       return
     }
 
     const args = suffix.split(' ');
-    steamUsers.getSteamUser(args[0], (err, res) => {
+
+    const discordUserId = msg.mentions.users.firstKey();
+    if (!discordUserId) return;
+
+    steamUsers.getSteamUser(discordUserId, (err, res) => {
       if (err) ("An error occurred.");
-      if (!res) msg.reply(`User ${args[0]} not found`);
+      if (!res || res === null){
+        console.log(`user: ${args[0]}`);
+        msg.reply(`User ${msg.guild.member(args[0].replace('<@','').replace('>','')).displayName} not found`);
+        return;
+      }
 
       csgoStats.load({
         key: steamAPIKey,
         id: res.steamId
-      }).then(r => {
+      })
+      .then(r => {
         let stats = r.body.playerstats.stats.reduce((obj, item) => (obj[item.name] = item.value, obj), {});
 
-         msg.channel.send(`\`\`\`${res.username}'s CS:GO Stats:
+        msg.channel.send(`\`\`\`${res.username}'s CS:GO Stats:
 last match kills: ${stats["last_match_kills"]}
 last match deaths: ${stats["last_match_deaths"]}
 last match wins: ${stats["last_match_wins"]}
@@ -31,8 +40,8 @@ total kills: ${stats["total_kills"]}
 total deaths: ${stats["total_deaths"]}
 total wins: ${stats["total_wins"]}
 total MVPs: ${stats["total_mvps"]}
-total knife kills: ${stats["total_kills_knife"]}\`\`\``);
-      }).catch(e => msg.channel.send("Error: Steam profile is private or SteamId is invalid"));
+total knife kills: ${stats["total_kills_knife"]}\`\`\``);})
+      .catch(e => msg.channel.send("Error: Steam profile is private or SteamId is invalid"));
     });
 
   },
@@ -40,14 +49,17 @@ total knife kills: ${stats["total_kills_knife"]}\`\`\``);
     if (!suffix) return;
     const args = suffix.split(' ', 2);
 
-    if (args.length != 2 || isNaN(args[0])) {
+    if (args.length != 2 || isNaN(args[0]) || msg.mentions.users.size !== 1) {
       msg.channel.send(`Invalid input. usage: ${help.add_steamid}`);
       return;
     }
 
+    const mentionedUser = msg.mentions.users.first();
+
     const steamUser = {
       steamId: args[0],
-      username: args[1]
+      username: mentionedUser.username,
+      discordUserId: mentionedUser.id
     };
 
     steamUsers.addSteamUser(steamUser, (err, res) => {
@@ -58,12 +70,10 @@ total knife kills: ${stats["total_kills_knife"]}\`\`\``);
       else
         msg.channel.send(`Steam user ${steamUser.username} added.`);
     });
-
   }
-
 }
 
 export const help = {
-  csgo: "!csgo <username> (add steam id with !add_steamid)",
-  add_steamid: "!add_steamid <steam Id> <username>. To obtain steam ID, visit https://steamidfinder.com"
+  csgo: "!csgo <@username> (mention) (add steam id with !add_steamid)",
+  add_steamid: "!add_steamid <steam Id> <@username>. To obtain steam ID, visit https://steamidfinder.com"
 }
