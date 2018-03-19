@@ -5,7 +5,7 @@ const adminChannelId = nconf.get("ADMIN_CHANNEL_ID");
 
 export default {
   join: (msg, suffix) => {
-    if (!membershipId || !adminChannelId || !msg.guild.available) return;
+    if (!membershipId || !adminChannelId || !msg.guild) return;
 
     if (!msg.member.roles.find("id", membershipId)) {
       const adminChannel = msg.guild.channels.get(adminChannelId);
