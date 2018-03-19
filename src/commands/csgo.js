@@ -6,7 +6,10 @@ const steamAPIKey = nconf.get("STEAM_API_KEY");
 
 export default {
   csgo: (msg, suffix) => {
-    if (!suffix) msg.reply(`usage: ${help.csgo}`);
+    if (!suffix) {
+      msg.reply(`usage: ${help.csgo}`);
+      return
+    }
 
     const args = suffix.split(' ');
     steamUsers.getSteamUser(args[0], (err, res) => {
